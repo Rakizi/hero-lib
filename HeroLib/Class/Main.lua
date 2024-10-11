@@ -1,11 +1,11 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL = ...
--- HeroDBC
-local DBC           = HeroDBC.DBC
+local _, NAG          = ...
+local HL                     = NAG.HL
 -- HeroLib
-local Cache         = HeroCache
+local Cache, Utils           = NAG.Cache, HL.Utils
+local DBC                    = NAG.DBC
 -- Lua
 local error         = error
 local setmetatable  = setmetatable
@@ -13,13 +13,13 @@ local stringformat  = string.format
 local tableinsert   = table.insert
 
 -- C_Item locals
-local GetItemInfo   = C_Item.GetItemInfo
+local GetItemInfo   = C_Item.GetItemInfo or GetItemInfo
 -- Accepts: itemInfo
 -- Returns: itemName (cstring), itemLink (cstring), itemQuality (ItemQuality), itemLevel (number), itemMinLevel(number), itemType (cstring), itemSubType (cstring), itemStackCound (number),
 -- itemEquipLoc (cstring), itemTexture (fileID), sellPrice (number), classID (number), subclassID (number), bindType (number), expansionID (number), setID (number), isCraftingReagent(bool)
 
 -- C_Spell locals
-local GetSpellInfo  = C_Spell.GetSpellInfo
+local GetSpellInfo  = GetUnifiedSpellInfo  --C_Spell.GetSpellInfo or C_SpellBook.GetSpellInfo
 -- Accepts: spellIdentifier; Returns: spellInfo (SpellInfo: castTime, name, minRange, originalIconID, iconID, maxRange, spellID)
 
 -- File Locals

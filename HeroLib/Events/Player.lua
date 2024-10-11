@@ -1,9 +1,11 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL         = ...
+local _, NAG          = ...
+local HL                     = NAG.HL
 -- HeroLib
-local Cache                 = HeroCache
+local Cache, Utils           = NAG.Cache, HL.Utils
+local DBC                    = NAG.DBC
 local Unit                  = HL.Unit
 local Player                = Unit.Player
 local Pet                   = Unit.Pet
@@ -19,9 +21,9 @@ local SPELL_FAILED_UNIT_NOT_INFRONT = SPELL_FAILED_UNIT_NOT_INFRONT
 
 -- Base API locals
 local C_Timer               = C_Timer
-local GetSpecialization     = GetSpecialization
+local GetSpecialization     = GetUnifiedSpecialization --GetSpecialization
 -- Accepts: isInspect, isPet, specGroup; Returns: currentSpec (number)
-local GetSpecializationInfo = GetSpecializationInfo
+local GetSpecializationInfo = GetUnifiedSpecializationInfo --GetSpecializationInfo
 -- Accepts: specIndex, isInspect, isPet, inspectTarget, sex
 -- Returns: id (number), name (string), description (string) icon (fileID), role (string), primaryStat (number)
 local GetFlyoutInfo         = GetFlyoutInfo
@@ -36,16 +38,16 @@ local UnitClass             = UnitClass
 -- Accepts: unitID; Returns: className (string), classFilename (string), classId (number)
 
 -- C_ClassTalents locals
-local GetActiveConfigID     = C_ClassTalents.GetActiveConfigID
+local GetActiveConfigID     = GetUnifiedActiveConfigID --C_ClassTalents.GetActiveConfigID
 
 -- C_Spell locals
-local GetSpellInfo          = C_Spell.GetSpellInfo
+local GetSpellInfo          = GetUnifiedSpellInfo --C_Spell.GetSpellInfo
 
 -- C_SpellBook locals
-local GetNumSpellBookSkillLines = C_SpellBook.GetNumSpellBookSkillLines
-local GetSpellBookItemInfo      = C_SpellBook.GetSpellBookItemInfo
-local GetSpellBookSkillLineInfo = C_SpellBook.GetSpellBookSkillLineInfo
-local HasPetSpells              = C_SpellBook.HasPetSpells
+local GetNumSpellBookSkillLines = C_SpellBook.GetNumSpellBookSkillLines or GetNumSpellTabs
+local GetSpellBookItemInfo      = GetUnifiedSpellBookItemInfo --C_SpellBook.GetSpellBookItemInfo
+local GetSpellBookSkillLineInfo = GetUnifiedSpellBookSkillLineInfo --C_SpellBook.GetSpellBookSkillLineInfo
+local HasPetSpells              = C_SpellBook.HasPetSpells or HasPetSpells
 
 -- C_Traits locals
 local GetConfigInfo             = C_Traits.GetConfigInfo
@@ -169,102 +171,166 @@ HL:RegisterForEvent(
   end,
   "CHAT_MSG_ADDON"
 )
+if HL.isRetail() then
+  -- Player Inspector
+  HL:RegisterForEvent(
+    function(Event, Arg1)
+      -- Prevent execute if not initiated by the player
+      if Event == "PLAYER_SPECIALIZATION_CHANGED" and Arg1 ~= "player" then
+        return
+      end
 
--- Player Inspector
-HL:RegisterForEvent(
-  function(Event, Arg1)
-    -- Prevent execute if not initiated by the player
-    if Event == "PLAYER_SPECIALIZATION_CHANGED" and Arg1 ~= "player" then
-      return
-    end
+      -- Update Player
+      Cache.Persistent.Player.Class = { UnitClass("player") }
+      Cache.Persistent.Player.Spec = { GetSpecializationInfo(GetSpecialization()) }
 
-    -- Update Player
-    Cache.Persistent.Player.Class = { UnitClass("player") }
-    Cache.Persistent.Player.Spec = { GetSpecializationInfo(GetSpecialization()) }
+      -- Wipe the texture from Persistent Cache
+      wipe(Cache.Persistent.Texture.Spell)
+      wipe(Cache.Persistent.Texture.Item)
 
-    -- Wipe the texture from Persistent Cache
-    wipe(Cache.Persistent.Texture.Spell)
-    wipe(Cache.Persistent.Texture.Item)
+      -- Update Equipment
+      Player:UpdateEquipment()
+      local Equip = Player:GetEquipment()
+      for i=1,16 do
+        if slot ~= 4 and not Equip[slot] then
+          C_Timer.After(2, function()
+              Player:UpdateEquipment()
+            end
+          )
+        end
+      end
 
-    -- Update Equipment
-    Player:UpdateEquipment()
-    local Equip = Player:GetEquipment()
-    for i=1,16 do
-      if slot ~= 4 and not Equip[slot] then
-        C_Timer.After(2, function()
-            Player:UpdateEquipment()
+      -- Load / Refresh Core Overrides
+      if Event == "PLAYER_SPECIALIZATION_CHANGED" then
+        local UpdateOverrides
+        UpdateOverrides = function()
+          if Cache.Persistent.Player.Spec[1] ~= nil then
+            HL.LoadRestores()
+            HL.LoadOverrides(Cache.Persistent.Player.Spec[1])
+          else
+            C_Timer.After(2, UpdateOverrides)
           end
-        )
-      end
-    end
-
-    -- Load / Refresh Core Overrides
-    if Event == "PLAYER_SPECIALIZATION_CHANGED" then
-      local UpdateOverrides
-      UpdateOverrides = function()
-        if Cache.Persistent.Player.Spec[1] ~= nil then
-          HL.LoadRestores()
-          HL.LoadOverrides(Cache.Persistent.Player.Spec[1])
-        else
-          C_Timer.After(2, UpdateOverrides)
         end
+        UpdateOverrides()
       end
-      UpdateOverrides()
-    end
 
-    if Event == "PLAYER_SPECIALIZATION_CHANGED" or Event == "PLAYER_TALENT_UPDATE" or Event == "TRAIT_CONFIG_UPDATED" or Event == "TRAIT_SUB_TREE_CHANGED" then
-      UpdateTalents = function()
-        wipe(Cache.Persistent.Talents)
-        local TalentConfigID = GetActiveConfigID()
-        local TalentConfigInfo
-        if TalentConfigID then
-          TalentConfigInfo = GetConfigInfo(TalentConfigID)
-        end
-        if TalentConfigID ~= nil and TalentConfigInfo ~= nil then
-          local TalentTreeIDs = TalentConfigInfo["treeIDs"]
-          for i = 1, #TalentTreeIDs do
-            for _, NodeID in pairs(GetTreeNodes(TalentTreeIDs[i])) do
-              local NodeInfo = GetNodeInfo(TalentConfigID, NodeID)
-              local ActiveTalent = NodeInfo.activeEntry
-              local SubTreeID = NodeInfo.subTreeID
-              local TalentRank = NodeInfo.activeRank
-              if SubTreeID then
-                local SubTreeInfo = GetSubTreeInfo(TalentConfigID, SubTreeID)
-                if SubTreeInfo then
-                  local SubTreeName = SubTreeInfo.name
-                  Cache.Persistent.Player.HeroTrees[SubTreeID] = SubTreeName
-                  if SubTreeInfo.isActive then
-                    Cache.Persistent.Player.ActiveHeroTree = SubTreeName
-                    Cache.Persistent.Player.ActiveHeroTreeID = SubTreeID
+      if Event == "PLAYER_SPECIALIZATION_CHANGED" or Event == "PLAYER_TALENT_UPDATE" or Event == "TRAIT_CONFIG_UPDATED" or Event == "TRAIT_SUB_TREE_CHANGED" then
+        UpdateTalents = function()
+          wipe(Cache.Persistent.Talents)
+          local TalentConfigID = GetActiveConfigID()
+          local TalentConfigInfo
+          if TalentConfigID then
+            TalentConfigInfo = GetConfigInfo(TalentConfigID)
+          end
+          if TalentConfigID ~= nil and TalentConfigInfo ~= nil then
+            local TalentTreeIDs = TalentConfigInfo["treeIDs"]
+            for i = 1, #TalentTreeIDs do
+              for _, NodeID in pairs(GetTreeNodes(TalentTreeIDs[i])) do
+                local NodeInfo = GetNodeInfo(TalentConfigID, NodeID)
+                local ActiveTalent = NodeInfo.activeEntry
+                local SubTreeID = NodeInfo.subTreeID
+                local TalentRank = NodeInfo.activeRank
+                if SubTreeID then
+                  local SubTreeInfo = GetSubTreeInfo(TalentConfigID, SubTreeID)
+                  if SubTreeInfo then
+                    local SubTreeName = SubTreeInfo.name
+                    Cache.Persistent.Player.HeroTrees[SubTreeID] = SubTreeName
+                    if SubTreeInfo.isActive then
+                      Cache.Persistent.Player.ActiveHeroTree = SubTreeName
+                      Cache.Persistent.Player.ActiveHeroTreeID = SubTreeID
+                    end
+                  end
+                end
+                if (ActiveTalent and TalentRank > 0) then
+                  local TalentEntryID = ActiveTalent.entryID
+                  local TalentEntryInfo = GetEntryInfo(TalentConfigID, TalentEntryID)
+                  -- There are entries for SubTree (Hero Talents) items, as of TWW.
+                  -- These are separate from the TalentEntryID of the nodes within the SubTree.
+                  -- Nodes and entries for SubTree talents are already processed through this code, so we can safely ignore the SubTree entries without a definitionID.
+                  if TalentEntryInfo and TalentEntryInfo["definitionID"] then
+                    local DefinitionID = TalentEntryInfo["definitionID"]
+                    local DefinitionInfo = GetDefinitionInfo(DefinitionID)
+                    local SpellID = DefinitionInfo["spellID"]
+                    local SpellName = GetSpellInfo(SpellID)
+                    Cache.Persistent.Talents[SpellID] = (Cache.Persistent.Talents[SpellID]) and (Cache.Persistent.Talents[SpellID] + TalentRank) or TalentRank
                   end
                 end
               end
-              if (ActiveTalent and TalentRank > 0) then
-                local TalentEntryID = ActiveTalent.entryID
-                local TalentEntryInfo = GetEntryInfo(TalentConfigID, TalentEntryID)
-                -- There are entries for SubTree (Hero Talents) items, as of TWW.
-                -- These are separate from the TalentEntryID of the nodes within the SubTree.
-                -- Nodes and entries for SubTree talents are already processed through this code, so we can safely ignore the SubTree entries without a definitionID.
-                if TalentEntryInfo and TalentEntryInfo["definitionID"] then
-                  local DefinitionID = TalentEntryInfo["definitionID"]
-                  local DefinitionInfo = GetDefinitionInfo(DefinitionID)
-                  local SpellID = DefinitionInfo["spellID"]
-                  local SpellName = GetSpellInfo(SpellID)
-                  Cache.Persistent.Talents[SpellID] = (Cache.Persistent.Talents[SpellID]) and (Cache.Persistent.Talents[SpellID] + TalentRank) or TalentRank
-                end
+            end
+          else
+            C_Timer.After(2, UpdateTalents)
+          end
+        end
+        UpdateTalents()
+      end
+    end,
+    "PLAYER_LOGIN", "ZONE_CHANGED_NEW_AREA", "PLAYER_SPECIALIZATION_CHANGED", "PLAYER_TALENT_UPDATE", "PLAYER_EQUIPMENT_CHANGED", "TRAIT_CONFIG_UPDATED", "TRAIT_SUB_TREE_CHANGED"
+  )
+else
+  -- Non-Retail, including Cataclysm talent handling
+  HL:RegisterForEvent(
+    function(Event, Arg1)
+      -- Prevent execution if not initiated by the player
+      if Event == "PLAYER_SPECIALIZATION_CHANGED" and Arg1 ~= "player" then
+        return
+      end
+
+      -- Update Player
+      Cache.Persistent.Player.Class = { UnitClass("player") }
+      Cache.Persistent.Player.Spec = { GetSpecializationInfo(GetSpecialization()) }
+
+      -- Wipe the texture from Persistent Cache
+      wipe(Cache.Persistent.Texture.Spell)
+      wipe(Cache.Persistent.Texture.Item)
+
+      -- Update Equipment
+      Player:UpdateEquipment()
+      local Equip = Player:GetEquipment()
+      for i = 1, 16 do
+        if i ~= 4 and not Equip[i] then
+          C_Timer.After(2, function()
+            Player:UpdateEquipment()
+          end)
+        end
+      end
+
+      -- Load / Refresh Core Overrides
+      if Event == "PLAYER_SPECIALIZATION_CHANGED" then
+        local UpdateOverrides
+        UpdateOverrides = function()
+          if Cache.Persistent.Player.Spec[1] ~= nil then
+            HL.LoadRestores()
+            HL.LoadOverrides(Cache.Persistent.Player.Spec[1])
+          else
+            C_Timer.After(2, UpdateOverrides)
+          end
+        end
+        UpdateOverrides()
+      end
+
+      -- Cataclysm/Classic talent handling (no `TRAIT_` events)
+      if Event == "PLAYER_SPECIALIZATION_CHANGED" or Event == "PLAYER_TALENT_UPDATE" then
+        UpdateTalents = function()
+          wipe(Cache.Persistent.Talents)
+          local numTalentTabs = GetNumTalentTabs()  -- Cata talent tab query
+          for i = 1, numTalentTabs do
+            local numTalents = GetNumTalents(i)  -- Number of talents in each tree
+            for j = 1, numTalents do
+              local name, iconTexture, tier, column, currentRank, maxRank, isExceptional, available = GetTalentInfo(i, j)
+              if currentRank > 0 then
+                -- Cache the learned talents
+                local SpellID = select(7, GetTalentInfo(i, j))  -- Get the SpellID for the talent
+                Cache.Persistent.Talents[SpellID] = currentRank
               end
             end
           end
-        else
-          C_Timer.After(2, UpdateTalents)
         end
+        UpdateTalents()
       end
-      UpdateTalents()
-    end
-  end,
-  "PLAYER_LOGIN", "ZONE_CHANGED_NEW_AREA", "PLAYER_SPECIALIZATION_CHANGED", "PLAYER_TALENT_UPDATE", "PLAYER_EQUIPMENT_CHANGED", "TRAIT_CONFIG_UPDATED", "TRAIT_SUB_TREE_CHANGED"
-)
-
+    end,
+    "PLAYER_LOGIN", "ZONE_CHANGED_NEW_AREA", "PLAYER_SPECIALIZATION_CHANGED", "PLAYER_TALENT_UPDATE", "PLAYER_EQUIPMENT_CHANGED"
+  )
+end
 -- Player Unit Cache
 HL:RegisterForEvent(
   function(Event, Arg1)

@@ -1,9 +1,10 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL          = ...
+local _, NAG          = ...
+local HL                     = NAG.HL
 -- HeroLib
-local Cache, Utils           = HeroCache, HL.Utils
+local Cache, Utils           = NAG.Cache, HL.Utils
 local Unit                   = HL.Unit
 local Player, Pet, Target    = Unit.Player, Unit.Pet, Unit.Target
 local Focus, MouseOver       = Unit.Focus, Unit.MouseOver
@@ -18,7 +19,7 @@ local GetInstanceInfo        = GetInstanceInfo
 -- playerDifficulty (number), isDynamicInstance (bool), instanceID (number), instanceGroupSize (number), lfgDungeonID (number)
 
 -- C_PartyInfo locals
-local IsDelveInProgress      = C_PartyInfo.IsDelveInProgress
+local IsDelveInProgress      = GetUnifiedIsDelveInProgress
 -- Accepts: nil; Returns: isDelveComplete (bool)
 
 -- C_QuestLog locals

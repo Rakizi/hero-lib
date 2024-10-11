@@ -1,9 +1,10 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL          = ...
+local _, NAG          = ...
+local HL                     = NAG.HL
 -- HeroLib
-local Cache, Utils           = HeroCache, HL.Utils
+local Cache, Utils           = NAG.Cache, HL.Utils
 local Unit                   = HL.Unit
 local Player, Pet, Target    = Unit.Player, Unit.Pet, Unit.Target
 local Focus, MouseOver       = Unit.Focus, Unit.MouseOver
@@ -13,11 +14,11 @@ local Spell                  = HL.Spell
 local Item                   = HL.Item
 
 -- C_UnitAuras locals
-local GetAuraDataByIndex     = C_UnitAuras.GetAuraDataByIndex
+local GetAuraDataByIndex     = GetUnifiedAuraData -- C_UnitAuras.GetAuraDataByIndex
 -- Accepts: unitToken, index, filter
 -- Returns: aura (AuraData: spellId, isBossAura, duration, expirationTime, isFromPlayerOrPet, points (table), icon, nameplateShowPersonal, nameplateShowAll,
 -- auraInstanceID, timeMod, isRaid, isHarmful, canApplyAura, name, isHelpful, applications, isNameplateOnly, sourceUnit, isStealable)
-local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
+local GetPlayerAuraBySpellID = GetUnifiedPlayerAuraBySpellID --C_UnitAuras.GetPlayerAuraBySpellID
 -- Accepts: spellID
 -- Returns: aura (AuraData: spellId, isBossAura, duration, expirationTime, isFromPlayerOrPet, points (table), icon, nameplateShowPersonal, nameplateShowAll,
 -- auraInstanceID, timeMod, isRaid, isHarmful, canApplyAura, name, isHelpful, applications, isNameplateOnly, sourceUnit, isStealable)

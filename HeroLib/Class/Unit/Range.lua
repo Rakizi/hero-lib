@@ -1,11 +1,11 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL          = ...
--- HeroDBC
-local DBC                    = HeroDBC.DBC
+local _, NAG          = ...
+local HL                     = NAG.HL
 -- HeroLib
-local Cache, Utils           = HeroCache, HL.Utils
+local Cache, Utils           = NAG.Cache, HL.Utils
+local DBC                    = NAG.DBC
 local Unit                   = HL.Unit
 local Player, Pet, Target    = Unit.Player, Unit.Pet, Unit.Target
 local Focus, MouseOver       = Unit.Focus, Unit.MouseOver
@@ -15,13 +15,13 @@ local Spell                  = HL.Spell
 local Item                   = HL.Item
 
 -- C_Item locals
-local IsItemInRange          = C_Item.IsItemInRange
+local IsItemInRange          = C_Item.IsItemInRange or IsItemInRange
 -- Accepts: itemInfo, targetToken; Returns: result (bool)
-local IsUsableItem           = C_Item.IsUsableItem
+local IsUsableItem           = C_Item.IsUsableItem or IsUsableItem
 -- Accepts: itemInfo; Returns: usable (bool), noMana (bool)
 
 -- C_Spell locals
-local IsSpellInRange         = C_Spell.IsSpellInRange
+local IsSpellInRange         = GetUnifiedIsSpellInRange -- C_Spell.IsSpellInRange
 -- Accepts: spellIdentifier, targetUnit; Returns: inRange (bool)
 
 -- Base API locals

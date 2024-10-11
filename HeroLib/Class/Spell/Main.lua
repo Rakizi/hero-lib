@@ -1,11 +1,13 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL          = ...
--- HeroDBC
-local DBC                    = HeroDBC.DBC
+local _, NAG          = ...
+local HL                     = NAG.HL
 -- HeroLib
-local Cache, Utils           = HeroCache, HL.Utils
+local Cache, Utils           = NAG.Cache, HL.Utils
+-- HeroDBC
+local DBC                    = NAG.DBC
+-- HeroLib
 local Unit                   = HL.Unit
 local Player, Pet, Target    = Unit.Player, Unit.Pet, Unit.Target
 local Focus, MouseOver       = Unit.Focus, Unit.MouseOver
@@ -19,13 +21,13 @@ local GetTime                = GetTime
 local pairs                  = pairs
 
 -- C_Spell locals
-local GetSpellCastCount      = C_Spell.GetSpellCastCount
+local GetSpellCastCount      = C_Spell.GetSpellCastCount or GetSpellCount
 -- Accepts: spellIdentifier; Returns: castCount (number)
-local GetSpellInfo           = C_Spell.GetSpellInfo
+local GetSpellInfo           = GetUnifiedSpellInfo --C_Spell.GetSpellInfo
 -- Accepts: spellIdentifier; Returns: spellInfo (SpellInfo: castTime, name, minRange, originalIconID, iconID, maxRange, spellID)
-local GetSpellPowerCost      = C_Spell.GetSpellPowerCost
+local GetSpellPowerCost      = GetUnifiedSpellPowerCost --C_Spell.GetSpellPowerCost
 -- Accepts: spellIdentifier; Returns: powerCosts (table of costs: hasRequiredAura, type, name, cost, minCost, requiredAuraID, costPercent, costPerSec)
-local IsSpellUsable          = C_Spell.IsSpellUsable
+local IsSpellUsable          = C_Spell.IsSpellUsable or IsUsableSpell
 -- Accepts: spellIdentifier; Returns: isUsable (bool), insufficientPower (bool)
 
 -- Base API locals

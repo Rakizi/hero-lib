@@ -1,11 +1,11 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL   = ...
--- HeroDBC
-local DBC             = HeroDBC.DBC
+local _, NAG          = ...
+local HL                     = NAG.HL
 -- HeroLib
-local Cache           = HeroCache
+local Cache, Utils           = NAG.Cache, HL.Utils
+local DBC                    = NAG.DBC
 local Unit            = HL.Unit
 local Player          = Unit.Player
 local Target          = Unit.Target
@@ -13,19 +13,19 @@ local Spell           = HL.Spell
 local Item            = HL.Item
 
 -- C_Item locals
-local GetDetailedItemLevelInfo = C_Item.GetDetailedItemLevelInfo
+local GetDetailedItemLevelInfo = C_Item.GetDetailedItemLevelInfo or GetDetailedItemLevelInfo
 -- Accepts: itemInfo; Returns: actualItemLevel (number), previewLevel (bool), sparseItemLevel (number)
-local GetItemCooldown = C_Item.GetItemCooldown
+local GetItemCooldown = C_Item.GetItemCooldown or C_Container.GetItemCooldown or GetItemCooldown
 -- Accepts: itemInfo; Returns: startTimeSeconds (number), durationSeconds (number), enableCooldownTimer (bool)
-local GetItemCount    = C_Item.GetItemCount
+local GetItemCount    = C_Item.GetItemCount or GetItemCount
 -- Accepts: itemInfo, includeBank, includeUses, includeReagentBank; Returns: count (number)
-local GetItemInfo     = C_Item.GetItemInfo
+local GetItemInfo     = C_Item.GetItemInfo or GetItemInfo
 -- Accepts: itemInfo
 -- Returns: itemName (cstring), itemLink (cstring), itemQuality (ItemQuality), itemLevel (number), itemMinLevel(number), itemType (cstring), itemSubType (cstring), itemStackCound (number),
 -- itemEquipLoc (cstring), itemTexture (fileID), sellPrice (number), classID (number), subclassID (number), bindType (number), expansionID (number), setID (number), isCraftingReagent(bool)
-local GetItemLink     = C_Item.GetItemLink
+local GetItemLink     = C_Item.GetItemLink or GetItemLink
 --Accepts: itemLocation; Returns: itemLink (string)
-local IsUsableItem    = C_Item.IsUsableItem
+local IsUsableItem    = C_Item.IsUsableItem or IsUsableItem
 -- Accepts: itemInfo; Returns: usable (bool), noMana (bool)
 
 -- Base API locals

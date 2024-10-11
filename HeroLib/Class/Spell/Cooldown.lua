@@ -1,9 +1,10 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL          = ...
+local _, NAG          = ...
+local HL                     = NAG.HL
 -- HeroLib
-local Cache, Utils           = HeroCache, HL.Utils
+local Cache, Utils           = NAG.Cache, HL.Utils
 local Unit                   = HL.Unit
 local Player, Pet, Target    = Unit.Player, Unit.Pet, Unit.Target
 local Focus, MouseOver       = Unit.Focus, Unit.MouseOver
@@ -13,9 +14,9 @@ local Spell                  = HL.Spell
 local Item                   = HL.Item
 
 -- C_Spell locals
-local GetSpellCharges        = C_Spell.GetSpellCharges
--- Accepts: spellIdentifier; Returns: chargeInfo (SpellChargeInfo: maxCharges, cooldownStartTime, chargeModRate, currentCharges, cooldownDuration)
-local GetSpellCooldown       = C_Spell.GetSpellCooldown
+local GetSpellCharges        = GetUnifiedSpellCharges --C_Spell.GetSpellCharges
+-- Accepts: spellIdentifier; Returns: chargeInfo (SpellChargeInfo: maxCha rges, cooldownStartTime, chargeModRate, currentCharges, cooldownDuration)
+local GetSpellCooldown       = GetUnifiedSpellCooldown -- C_Spell.GetSpellCooldown
 -- Accepts: spellIdentifier; Returns spellCooldownInfo (SpellCooldownInfo: isEnabled, startTime, modRate, duration)
 
 -- lua locals

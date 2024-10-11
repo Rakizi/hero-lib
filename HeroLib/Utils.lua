@@ -1,8 +1,12 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL = ...
-local Cache         = HeroCache
+local _, NAG        = ...
+NAG.HL = {}
+local HL            = NAG.HL
+HL.Utils         = {}
+-- HeroLib
+local Cache, Utils  = NAG.Cache, HL.Utils
 -- Lua
 local gmatch        = gmatch
 local pairs         = pairs
@@ -11,11 +15,9 @@ local tableinsert   = table.insert
 local tonumber      = tonumber
 local type          = type
 -- File Locals
-local Utils         = {}
 
 --- ======= GLOBALIZE =======
 -- Addon
-HL.Utils            = Utils
 
 
 --- ============================ CONTENT ============================

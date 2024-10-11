@@ -1,17 +1,19 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, Cache = ...
+local addonName, NAG = ...
+NAG.Cache = {}
+local Cache = NAG.Cache
 -- Lua
 local wipe = wipe
 -- File Locals
+--TODO: localize this
 if not HeroCacheDB then
   _G.HeroCacheDB = {}
   HeroCacheDB.Enabled = true
 end
 --- ======= GLOBALIZE =======
 -- Addon
-HeroCache = Cache
 
 
 --- ============================ CONTENT ============================
@@ -24,6 +26,8 @@ Cache.MiscInfo = {}
 Cache.SpellInfo = {}
 Cache.ItemInfo = {}
 Cache.UnitInfo = {}
+Cache.BuildInfo = {}
+
 -- Persistent
 Cache.Persistent = {
   Equipment = {},
@@ -57,7 +61,7 @@ function Cache.Reset()
     wipe(Cache.SpellInfo)
     wipe(Cache.ItemInfo)
     wipe(Cache.UnitInfo)
-
+    wipe(Cache.BuildInfo)
     Cache.HasBeenReset = true
   end
 end

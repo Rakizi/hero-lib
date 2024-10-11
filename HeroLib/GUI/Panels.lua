@@ -1,9 +1,11 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL  = ...
+local _, NAG          = ...
+local HL                     = NAG.HL
 -- HeroLib
-local Utils          = HL.Utils
+local Cache, Utils           = NAG.Cache, HL.Utils
+local DBC                    = NAG.DBC
 
 -- Lua locals
 local stringformat   = string.format

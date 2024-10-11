@@ -1,9 +1,10 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL = ...
+local addonName, NAG = ...
+local HL            = NAG.HL
 -- HeroLib
-local Cache         = HeroCache
+local Cache         = NAG.Cache
 local Unit          = HL.Unit
 local Player        = Unit.Player
 local Target        = Unit.Target
@@ -13,8 +14,10 @@ local Item          = HL.Item
 local mathmax       = math.max
 local mathmin       = math.min
 -- File Locals
-local OnRetail              = true
-local PrintedClassicWarning = false
+local OnRetail              = false
+local OnEra                 = false
+local OnClassic             = false
+local PrintedWarning        = false
 
 
 --- ============================ CONTENT ============================
@@ -48,17 +51,22 @@ HL.Timer = {
 }
 
 function HL.Pulse()
-  if HL.BuildInfo[4] and HL.BuildInfo[4] < 110000 then
-    OnRetail = false
+
+  if HL.BuildInfo[4] and HL.BuildInfo[4] < 20000 then
+    OnEra = true
+  elseif HL.BuildInfo[4] and HL.BuildInfo[4] < 80000 then
+    OnClassic = true
+  elseif HL.BuildInfo[4] and HL.BuildInfo[4] > 110000 then
+    OnRetail = true
   end
-  if not OnRetail then
-    if not PrintedClassicWarning then
-      HL.Print("HeroRotation and HeroLib currently only support retail WoW (The War Within). Classic, Wrath of the Lich King, and Hardcore Classic are not supported.")
-      PrintedClassicWarning = true
+  if not ( OnRetail or OnClassic or OnEra ) then
+    if not PrintedWarning then
+      HL.Print("HeroLib currently not supported on this client.")
+      PrintedWarning = true
     end
     return
   end
-  if GetTime(true) > HL.Timer.Pulse and OnRetail then
+  if GetTime(true) > HL.Timer.Pulse and ( OnRetail or OnClassic or OnEra ) then
     -- Put a 10ms min and 50ms max limiter to save FPS (depending on World Latency).
     -- And add the Reduce CPU Load offset (default 50ms) in case it's enabled.
     --HL.Timer.PulseOffset = mathmax(10, mathmin(50, HL.Latency()))/1000 + (HL.GUISettings.General.ReduceCPULoad and HL.GUISettings.General.ReduceCPULoadOffset or 0)

@@ -1,9 +1,11 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL          = ...
+local _, NAG          = ...
+local HL                     = NAG.HL
 -- HeroLib
-local Cache                  = HeroCache
+local Cache, Utils           = NAG.Cache, HL.Utils
+local DBC                    = NAG.DBC
 local Unit                   = HL.Unit
 local Player                 = Unit.Player
 local Pet                    = Unit.Pet

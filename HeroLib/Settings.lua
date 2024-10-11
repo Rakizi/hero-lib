@@ -1,7 +1,10 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL     = ...
+local _, NAG          = ...
+local HL                     = NAG.HL
+-- HeroLib
+local Cache, Utils           = NAG.Cache, HL.Utils
 -- File Locals
 local GUI               = HL.GUI
 local CreatePanel       = GUI.CreatePanel

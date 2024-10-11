@@ -1,15 +1,15 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, HL = ...
-local Cache         = HeroCache
+local _, NAG          = ...
+local HL                     = NAG.HL
+-- HeroLib
+local Cache, Utils           = NAG.Cache, HL.Utils
 -- Lua
 local print         = print
 -- File Locals
 
 
---- ======= GLOBALIZE =======
-HeroLib = HL
 HL.MAXIMUM = 40 -- Max # Buffs and Max # Nameplates.
 
 
