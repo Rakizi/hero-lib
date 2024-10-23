@@ -44,12 +44,12 @@ local GetActiveConfigID     = GetUnifiedActiveConfigID --C_ClassTalents.GetActiv
 local GetSpellInfo          = GetUnifiedSpellInfo --C_Spell.GetSpellInfo
 
 -- C_SpellBook locals
-local GetNumSpellBookSkillLines = C_SpellBook.GetNumSpellBookSkillLines or GetNumSpellTabs
+local GetNumSpellBookSkillLines = C_SpellBook.GetNumSpellBookSkillLines or GetNumSkillLines
 local GetSpellBookItemInfo      = GetUnifiedSpellBookItemInfo --C_SpellBook.GetSpellBookItemInfo
 local GetSpellBookSkillLineInfo = GetUnifiedSpellBookSkillLineInfo --C_SpellBook.GetSpellBookSkillLineInfo
 local HasPetSpells              = C_SpellBook.HasPetSpells or HasPetSpells
 
--- C_Traits locals
+-- C_Traits locals --TODO: not in cata
 local GetConfigInfo             = C_Traits.GetConfigInfo
 local GetDefinitionInfo         = C_Traits.GetDefinitionInfo
 local GetEntryInfo              = C_Traits.GetEntryInfo
@@ -69,6 +69,7 @@ local wipe                  = wipe
 
 --- ============================ CONTENT ============================
 -- Scan the Book to cache every Spell Learned.
+-- TODO: Probably needs some cata/classic fixing here
 local function BookScan(BlankScan)
   -- Pet Book
   do
@@ -93,8 +94,8 @@ local function BookScan(BlankScan)
   -- Player Book
   do
     local SpellLearned = Cache.Persistent.SpellLearned.Player
-
     for i = 1, GetNumSpellBookSkillLines() do
+      print(i)
       local SkillLineInfo = GetSpellBookSkillLineInfo(i)
       local OffSpec = SkillLineInfo.offSpecID
       local Offset = SkillLineInfo.itemIndexOffset

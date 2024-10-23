@@ -78,11 +78,13 @@ end
 
 do
   -- Get if the player is on a combat mount or not.
-  local CombatMountBuff = {
+  -- TODO: Add classic/cata support
+  local CombatMountBuff = {}
+  if HL.isRetail() then CombatMountBuff = {
     --- Classes
-    Spell(131347), -- Demon Hunter Glide
     Spell(783),    -- Druid Travel Form
     Spell(165962), -- Druid Flight Form
+    Spell(131347), -- Demon Hunter Glide
     Spell(220509), -- Paladin Divine Steed
     Spell(221883), -- Paladin Divine Steed
     Spell(221885), -- Paladin Divine Steed
@@ -113,7 +115,10 @@ do
     -- Nagrand
     Spell(164222), -- Frostwolf War Wolf
     Spell(165803) -- Telaari Talbuk
+  } else CombatMountBuff = {
+    Spell(783),    -- Druid Travel Form
   }
+  end
   function Player:IsOnCombatMount()
     for i = 1, #CombatMountBuff do
       if self:BuffUp(CombatMountBuff[i], true) then
@@ -125,13 +130,15 @@ do
 end
 
 -- Get if the player is in a valid vehicle.
+-- TODO: Add classic/cata support
 function Player:IsInVehicle()
   return UnitInVehicle(self.UnitID) and not self:IsInWhitelistedVehicle()
 end
 
 do
   -- Get if the player is in a vhehicle that is not really a vehicle.
-  local InVehicleWhitelist = {
+  local InVehicleWhitelist = {}
+  if HL.isRetail() then InVehicleWhitelist = {
     Spells = {
       --- Dragonflight
       Spell(377222), -- Consume (Treemouth, Brackenhide Hollow)
@@ -164,6 +171,7 @@ do
       87076, -- Snarler
     }
   }
+  end
   function Player:IsInWhitelistedVehicle()
     -- Spell
     local VehicleSpells = InVehicleWhitelist.Spells

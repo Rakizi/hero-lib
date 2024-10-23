@@ -173,7 +173,7 @@ function Unit:TimeToX(Percentage, MinSamples)
 end
 
 -- Get the unit TTD Percentage
-local SpecialTTDPercentageData = {
+local SpecialTTDPercentageData = { -- TODO: add clasic/catatclysm support
   --- Dragonflight
   ----- Dungeons -----
   --- Brackenhide Hollow 

@@ -339,7 +339,7 @@ do
 end
 
 do
-  local EnemyAbsorbSpells = {
+  local EnemyAbsorbSpells = { --TODO: Add classic/cata support?
     ---- Vault of the Incarnates
     -- Raszageth
     Spell(382530), -- Surging Ruiner Shield (Surge)

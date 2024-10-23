@@ -2,9 +2,9 @@
 --- ======= LOCALIZE =======
 -- Addon
 local _, NAG        = ...
-NAG.HL = {}
+NAG.HL              = NAG.HL or {}
 local HL            = NAG.HL
-HL.Utils         = {}
+HL.Utils            = NAG.Utils or {}
 -- HeroLib
 local Cache, Utils  = NAG.Cache, HL.Utils
 -- Lua
@@ -15,6 +15,7 @@ local tableinsert   = table.insert
 local tonumber      = tonumber
 local type          = type
 -- File Locals
+NextActionGuideDB = NextActionGuideDB or {}
 
 --- ======= GLOBALIZE =======
 -- Addon

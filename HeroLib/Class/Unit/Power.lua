@@ -52,9 +52,8 @@ end
 
 -- power.regen
 function Unit:PowerRegen()
-  local UnitID = self:ID()
 
-  return GetPowerRegen(UnitID)
+  return GetPowerRegen()
 end
 
 -- power.pct

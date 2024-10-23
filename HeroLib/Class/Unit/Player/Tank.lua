@@ -20,7 +20,7 @@ local Item                   = HL.Item
 
 --- ============================ CONTENT ============================
 do
-  local ActiveMitigationSpells = {
+  local ActiveMitigationSpells = { --TODO: Add classic/cata support
     Buff = {
       -- PR Legion
       Spell(191941), -- Darkstrikes (VotW - 1st)
@@ -105,7 +105,7 @@ do
 end
 
 do
-  local HealingAbsorbedSpells = {
+  local HealingAbsorbedSpells = { --TODO: Add classic/cata support
     Debuff = {
       -- T21 Antorus
       Spell(243961), -- Misery (Varimathras)

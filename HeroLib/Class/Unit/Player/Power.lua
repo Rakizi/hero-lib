@@ -63,7 +63,7 @@ do
 
   -- mana.regen
   function Player:ManaRegen()
-    return GetPowerRegen(self.UnitID)
+    return GetPowerRegen()
   end
 
   -- Mana regen in a cast
@@ -170,7 +170,7 @@ do
 
   -- focus.regen
   function Player:FocusRegen()
-    return GetPowerRegen(self.UnitID)
+    return GetPowerRegen()
   end
 
   -- focus.pct
@@ -274,7 +274,7 @@ do
 
   -- energy.regen
   function Player:EnergyRegen()
-    return GetPowerRegen(self.UnitID)
+    return GetPowerRegen()
   end
 
   -- energy.pct

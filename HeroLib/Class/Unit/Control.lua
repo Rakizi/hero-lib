@@ -20,7 +20,7 @@ local Item                   = HL.Item
 
 --- ============================ CONTENT ============================
 -- Get if the unit is stunned or not
-local IsStunnedDebuffs = {
+local IsStunnedDebuffs = { --TODO: Add classic/cata support
   -- Death Knight
   Spell(91797),  -- Monstrous Blow (pet)
   Spell(91800),  -- Gnaw (pet)
@@ -32,6 +32,8 @@ local IsStunnedDebuffs = {
   Spell(5211),   -- Mighty Bash
   Spell(22570),  -- Maim
   Spell(163505), -- Rake
+  Spell(9005),   -- Pounce
+  Spell(33786),  -- Cyclone
   -- Evoker
   Spell(372245), -- Terror of the Skies
   -- Hunter
@@ -47,6 +49,7 @@ local IsStunnedDebuffs = {
   -- Rogue
   Spell(408),    -- Kidney Shot
   Spell(1833),   -- Cheap Shot
+  Spell(1776),   -- Gouge
   -- Warlock
   Spell(30283),  -- Shadowfury
   -- Warrior

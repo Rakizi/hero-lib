@@ -21,9 +21,9 @@ local GetCritChance          = GetCritChance
 -- Accepts: nil; Returns: critChance (number)
 local GetHaste               = GetHaste
 -- Accepts: nil; Returns: haste (number)
-local GetMasteryEffect       = GetMasteryEffect
+local GetMasteryEffect       = GetMasteryEffect --TODO: not in cata?
 -- Accepts: nil; Returns: masteryEffect (number), bonusCoefficient (number)
-local GetVersatilityBonus    = GetVersatilityBonus
+local GetVersatilityBonus    = GetVersatilityBonus --TODO: not in cata?
 -- Accepts: combatRating; Returns: versatilityBonus (number)
 local UnitAttackPower        = UnitAttackPower
 -- Accepts: unitID; Returns: base (number), posBuff (number), negBuff (number)
@@ -39,6 +39,7 @@ local UnitDamage             = UnitDamage
 
 --- ============================ CONTENT ============================
 -- gcd
+-- TODO: Add classic/cata support
 do
   local GCD_OneSecond = {
     [103] = true, -- Feral

@@ -1,3 +1,4 @@
+---@diagnostic disable: deprecated
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
@@ -216,7 +217,7 @@ end
 function Unit:IsSpellInRange(ThisSpell)
   local GUID = self:GUID()
   if not GUID then return false end
-  
+
   return IsSpellInRange(ThisSpell:ID(), self:ID())
 end
 

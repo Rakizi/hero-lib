@@ -1,3 +1,4 @@
+---@diagnostic disable: deprecated
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
@@ -23,7 +24,7 @@ local GetItemInfo     = C_Item.GetItemInfo or GetItemInfo
 -- Accepts: itemInfo
 -- Returns: itemName (cstring), itemLink (cstring), itemQuality (ItemQuality), itemLevel (number), itemMinLevel(number), itemType (cstring), itemSubType (cstring), itemStackCound (number),
 -- itemEquipLoc (cstring), itemTexture (fileID), sellPrice (number), classID (number), subclassID (number), bindType (number), expansionID (number), setID (number), isCraftingReagent(bool)
-local GetItemLink     = C_Item.GetItemLink or GetItemLink
+local GetItemLink     = C_Item.GetItemLink
 --Accepts: itemLocation; Returns: itemLink (string)
 local IsUsableItem    = C_Item.IsUsableItem or IsUsableItem
 -- Accepts: itemInfo; Returns: usable (bool), noMana (bool)

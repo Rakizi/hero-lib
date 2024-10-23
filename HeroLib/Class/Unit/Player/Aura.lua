@@ -1,7 +1,7 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local _, NAG          = ...
+local _, NAG                 = ...
 local HL                     = NAG.HL
 -- HeroLib
 local Cache, Utils           = NAG.Cache, HL.Utils
@@ -14,40 +14,57 @@ local Spell                  = HL.Spell
 local Item                   = HL.Item
 
 -- Lua locals
-
+local tableinsert = table.insert
 -- File Locals
 
 
 --- ============================ CONTENT ============================
 -- Get if the player is stealthed or not
+--TODO: Verify
 do
   local StealthSpellsByType = {
     -- Normal Stealth
     {
       -- Rogue
       Spell(1784), -- Stealth
-      Spell(115191), -- Stealth w/ Subterfuge Talent
       Spell(11327), -- Vanish
-      Spell(115193), -- Vanish w/ Subterfuge Talent
       -- Feral
       Spell(5215) -- Prowl
     },
     -- Combat Stealth
     {
-      -- Rogue
-      Spell(115192), -- Subterfuge Buff
-      Spell(185422), -- Stealth from Shadow Dance
-      -- Druid
-      Spell(102543) -- Incarnation: King of the Jungle
     },
     -- Special Stealth
     {
-      -- Rogue
-      Spell(375939), -- Sepsis stance mask buff
       -- Night Elf
       Spell(58984) -- Shadowmeld
     }
   }
+  if HL.isRetail() then
+    -- Normal Stealth
+    -- Rogue
+    tableinsert(StealthSpellsByType[1], Spell(115191)) -- Stealth w/ Subterfuge Talent
+    tableinsert(StealthSpellsByType[1], Spell(115193)) -- Vanish w/ Subterfuge Talent
+
+    -- Combat Stealth
+    --Rogue
+    tableinsert(StealthSpellsByType[2], Spell(115192)) -- Subterfuge Buff
+    tableinsert(StealthSpellsByType[2], Spell(185422)) -- Stealth from Shadow Dance
+    -- Druid
+    tableinsert(StealthSpellsByType[2], Spell(102543)) -- Incarnation: King of the Jungle
+
+    -- Special Stealth
+    -- Rogue
+    tableinsert(StealthSpellsByType[3], Spell(375939)) -- Sepsis stance mask buff
+
+  elseif HL.isClassic() then
+    -- Normal Stealth
+
+    -- Combat Stealth
+
+    -- Special Stealth
+
+  end
 
   function Player:StealthRemains(CheckCombat, CheckSpecial, BypassRecovery)
     -- Considering there is a small delay between the ability cast and the buff trigger we also look at the time since last cast.

@@ -340,13 +340,13 @@ function GUI.LoadSettingsRecursively (Table, KeyChain)
       -- Check if the final key is a string or a number (the case for table values with numeric index)
       local ParsedKey = StringToNumberIfPossible(Key)
       -- Load the saved value
-      local DBSetting = HeroLibDB.GUISettings[NewKeyChain]
+      local DBSetting = NextActionGuideDB.HeroLibDB.GUISettings[NewKeyChain]
       -- If the saved value exists, take it
       if DBSetting ~= nil then
         Table[ParsedKey] = DBSetting
       -- Else, save the default value
       else
-        HeroLibDB.GUISettings[NewKeyChain] = Value
+        NextActionGuideDB.HeroLibDB.GUISettings[NewKeyChain] = Value
       end
     end
   end

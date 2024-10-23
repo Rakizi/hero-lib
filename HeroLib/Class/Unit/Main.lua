@@ -186,6 +186,7 @@ end
 
 local DummyUnits = {
   -- City (SW, Orgri, ...)
+  [5652] = true,  -- Undercity Practice Dummy
   [31146] = true, -- Raider's Training Dummy
   [31144] = true, -- Training Dummy
   [32666] = true, -- Training Dummy
@@ -194,6 +195,13 @@ local DummyUnits = {
   [114832] = true, -- PvP Training Dummy
   [153285] = true, -- Training Dummy
   [153292] = true, -- Training Dummy
+  -- Ebon Hold DK
+  [32547] = true, -- Highlord's Nemesis Trainer
+  [32543] = true, -- Veteran's Training Dummy
+  [32542] = true,  -- Disciple's Training Dummy
+  [32545] = true,  -- Initiate's Training Dummy
+  [32546] = true,  -- Ebon Knight's Training Dummy
+  [54344] = true,  -- Highlord's Nemesis Trainer
   -- MoP Shrine of Two Moons
   [67127] = true, -- Training Dummy
   -- WoD Alliance Garrison

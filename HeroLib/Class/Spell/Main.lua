@@ -1,8 +1,11 @@
+---@diagnostic disable: deprecated
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local _, NAG          = ...
-local HL                     = NAG.HL
+local _, ns = ...
+local NAGHeroLib = {}
+_G.NAGHeroLib = NAGHeroLib
+local HL                     = NAGHeroLib.HL
 -- HeroLib
 local Cache, Utils           = NAG.Cache, HL.Utils
 -- HeroDBC

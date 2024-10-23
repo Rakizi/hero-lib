@@ -1,17 +1,12 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local _, NAG          = ...
-local HL                     = NAG.HL
+local _, ns = ...
+local NAGHeroLib = {}
+_G.NAGHeroLib = NAGHeroLib
+local HL                     = NAGHeroLib.HL
 -- HeroLib
-local Cache, Utils           = NAG.Cache, HL.Utils
-local Unit                   = HL.Unit
-local Player, Pet, Target    = Unit.Player, Unit.Pet, Unit.Target
-local Focus, MouseOver       = Unit.Focus, Unit.MouseOver
-local Arena, Boss, Nameplate = Unit.Arena, Unit.Boss, Unit.Nameplate
-local Party, Raid            = Unit.Party, Unit.Raid
 local Spell                  = HL.Spell
-local Item                   = HL.Item
 
 -- C_Spell locals
 local GetSpellCharges        = GetUnifiedSpellCharges --C_Spell.GetSpellCharges

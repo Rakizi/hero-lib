@@ -17,7 +17,7 @@ local CreatePanelOption = GUI.CreatePanelOption
 HL.GUISettings = {
   General = {
     -- Debug Mode
-    DebugMode = false,
+    DebugMode = true,
     -- Reduce CPU Usage (decrease a little bit Rotation potential performance but saves FPS)
     ReduceCPULoad = false,
     ReduceCPULoadOffset = 34, -- Default:34ms | It'll be added to the default 66ms, can be positive or negative
@@ -118,7 +118,7 @@ HL.GUISettings = {
 
 function HL.GUI.CorePanelSettingsInit()
   -- GUI
-  local HLPanel = CreatePanel(HL.GUI, "HeroLib", "PanelFrame", HL.GUISettings, HeroLibDB.GUISettings)
+  local HLPanel = CreatePanel(HL.GUI, "HeroLib", "PanelFrame", HL.GUISettings, NextActionGuideDB.HeroLibDB.GUISettings)
   -- Child Panel
   local CP_General = CreateChildPanel(HLPanel, "General")
   -- Debug

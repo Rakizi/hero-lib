@@ -1,19 +1,15 @@
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
-local addonName, NAG = ...
+local addonName, NAGHeroCache = ...
 NAG.Cache = {}
 local Cache = NAG.Cache
 -- Lua
 local wipe = wipe
--- File Locals
---TODO: localize this
-if not HeroCacheDB then
-  _G.HeroCacheDB = {}
-  HeroCacheDB.Enabled = true
-end
---- ======= GLOBALIZE =======
--- Addon
+NextActionGuideDB = NextActionGuideDB or {}
+NextActionGuideDB.HeroCacheDB = NextActionGuideDB.HeroCacheDB or {}
+local HeroCacheDB = NextActionGuideDB.HeroCacheDB
+HeroCacheDB.Enabled = true
 
 
 --- ============================ CONTENT ============================

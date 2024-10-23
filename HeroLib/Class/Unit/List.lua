@@ -23,7 +23,7 @@ local type                   = type
 --- ============================ CONTENT ============================
 -- Check if the unit is coded as blacklisted or not.
 do
-  local SBDSpells = {
+  local SBDSpells = { --TODO: Add classic/cata support
     Shadowlands = {
       R_CoN_SinsoulBulwarkKaal = Spell(343126),
       R_CoN_SinsoulBulwarkGrashaal = Spell(343135),
@@ -238,7 +238,7 @@ end
 --- Check if the unit is coded as blacklisted for Marked for Death (Rogue) or not.
 -- Most of the time if the unit doesn't really die and isn't the last unit of an instance.
 do
-  local SpecialMfDBlacklistData = {
+  local SpecialMfDBlacklistData = { --TODO: Add classic/cata support?
     --- Legion
     ----- Dungeons (7.0 Patch) -----
     --- Halls of Valor

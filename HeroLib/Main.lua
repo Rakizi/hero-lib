@@ -27,11 +27,11 @@ HL.MainFrame:RegisterEvent("ADDON_LOADED")
 HL.MainFrame:SetScript("OnEvent", function (self, Event, Arg1)
   if Event == "ADDON_LOADED" then
     if Arg1 == "HeroLib" then
-      if type(HeroLibDB) ~= "table" then
-        HeroLibDB = {}
+      if type(NextActionGuideDB.HeroLibDB) ~= "table" then
+        NextActionGuideDB.HeroLibDB = {}
       end
-      if type(HeroLibDB.GUISettings) ~= "table" then
-        HeroLibDB.GUISettings = {}
+      if type(NextActionGuideDB.HeroLibDB.GUISettings) ~= "table" then
+        NextActionGuideDB.HeroLibDB.GUISettings = {}
       end
       HL.GUI.LoadSettingsRecursively(HL.GUISettings)
       HL.GUI.CorePanelSettingsInit()

@@ -1,3 +1,4 @@
+---@diagnostic disable: deprecated
 --- ============================ HEADER ============================
 --- ======= LOCALIZE =======
 -- Addon
@@ -237,7 +238,7 @@ do
     self.ItemMinLevel = ItemMinLevel
     self.ItemSlotIDs = ItemSlotIDs or ItemSlotTable[ItemEquipLoc]
     self.ItemUseSpell = DBC.ItemSpell[ItemID] and HL.Spell(DBC.ItemSpell[ItemID]) or nil
-    
+
     -- Variables
     self.LastDisplayTime = 0
     self.LastHitTime = 0
